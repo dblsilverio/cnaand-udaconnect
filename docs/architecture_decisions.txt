@@ -4,7 +4,7 @@
 
  Frontend facing module that is responsible for handling Person data and services.
  It provides a REST API capable of simple interactions based on HTTP protocol. In addition, it relies on Kafka-based
- messaging producer/consumer services for new entities, avoiding locking clients while persisting them in the database.
+ messaging producer service for producing new entities, avoiding locking clients while persisting them in the database.
 
  It also provides to the frontend access to the geolocation feature by communication via gRPC with ConnectionData API,
  achieving better performance with small serialized protobuf messages.
@@ -25,7 +25,15 @@
  * Small message payload - mainly binary communication through HTTP 2
  * Native message strict contracts - .proto files describe a well formed message
 
-1.4. Other Aspects
+1.4. Consumers
+
+ This module main responsibility is to contain all consumers implementations for Person and Location API(and any other
+ in the future).
+ Since it decouples the consumers from the API/Producers, this module may be scaled in an arbitrary fashion without leading
+ to any unwanted behavior in the API's operations.
+
+1.5. Other Aspects
 
  * Microservices are using a shared database pattern.
  * Python version updated to 3.9-alpine
+ * Using simple Kubernetes & Kafka deployment based on Bitnami images Github(https://github.com/bitnami/bitnami-docker-kafka)
