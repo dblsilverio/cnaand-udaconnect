@@ -28,3 +28,5 @@ class PersonService:
 
         session.add(new_person)
         session.commit()
+
+        logger.info(f"New person persisted: {new_person.id}")

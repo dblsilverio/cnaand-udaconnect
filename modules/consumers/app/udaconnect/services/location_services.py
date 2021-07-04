@@ -24,8 +24,9 @@ class LocationService:
 
         new_location = Location()
         new_location.person_id = location["person_id"]
-        new_location.creation_time = location["creation_time"]
         new_location.coordinate = ST_Point(
             location["latitude"], location["longitude"])
-        session.session.add(new_location)
-        session.session.commit()
+        session.add(new_location)
+        session.commit()
+
+        logger.info(f"New location persisted: {new_location.id}")
