@@ -1,28 +1,23 @@
+import json
 import logging
+
+from builtins import staticmethod
+from kafka import KafkaProducer
 from typing import Dict, List
 
 from app import db
-from app.udaconnect.models import Connection, Location, Person
-from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
-from geoalchemy2.functions import ST_AsText, ST_Point
-from sqlalchemy.sql import text
+from app.udaconnect.models import Person
 
 logging.basicConfig(level=logging.WARNING)
-logger = logging.getLogger("udaconnect-api")
+logger = logging.getLogger("udaconnect-person-svc")
 
 
 class PersonService:
+
     @staticmethod
-    def create(person: Dict) -> Person:
-        new_person = Person()
-        new_person.first_name = person["first_name"]
-        new_person.last_name = person["last_name"]
-        new_person.company_name = person["company_name"]
+    def create(person: Dict):
+        PersonProducer.send_message(person)
 
-        db.session.add(new_person)
-        db.session.commit()
-
-        return new_person
 
     @staticmethod
     def retrieve(person_id: int) -> Person:
@@ -32,3 +27,16 @@ class PersonService:
     @staticmethod
     def retrieve_all() -> List[Person]:
         return db.session.query(Person).all()
+
+
+TOPIC_NAME = 'person'
+KAFKA_SERVER = 'kafka:9092'
+
+kafka_producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
+
+
+class PersonProducer:
+    @staticmethod
+    def send_message(person):
+        kafka_producer.send(TOPIC_NAME, json.dumps(person).encode())
+        kafka_producer.flush(timeout=5.0)

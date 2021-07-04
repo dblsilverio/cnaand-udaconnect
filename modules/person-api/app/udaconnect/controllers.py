@@ -2,7 +2,7 @@ from datetime import datetime
 
 from app.udaconnect.models import Person
 from app.udaconnect.schemas import ConnectionSchema, PersonSchema
-from app.udaconnect.services import PersonService
+from app.udaconnect.services import PersonService, PersonProducer
 from flask import request
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
@@ -19,11 +19,12 @@ api = Namespace("UdaConnect", description="Provides person data")  # noqa
 @api.route("/persons")
 class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
-    @responds(schema=PersonSchema)
-    def post(self) -> Person:
+    @api.response(202, 'Person creation accepted')
+    def post(self):
         payload = request.get_json()
-        new_person: Person = PersonService.create(payload)
-        return new_person
+        PersonService.create(payload)
+
+        return {'status': 'accepted'}, 202
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:

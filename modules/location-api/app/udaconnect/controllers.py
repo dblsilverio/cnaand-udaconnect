@@ -1,7 +1,4 @@
-from datetime import datetime
-
-from app.udaconnect.models.person import Person
-from app.udaconnect.models.person import Location
+from app.udaconnect.models import Location
 from app.udaconnect.schemas import LocationSchema
 from app.udaconnect.services import LocationService
 from flask import request
@@ -19,10 +16,13 @@ api = Namespace("UdaConnect - Location API", description="Provides location data
 @api.route("/locations")
 class LocationListResource(Resource):
     @accepts(schema=LocationSchema)
-    @responds(schema=LocationSchema)
-    def post(self) -> Location:
-        location: Location = LocationService.create(request.get_json())
-        return location
+    @api.response(202, 'Location creation accepted')
+    def post(self):
+        location: Location = request.get_json()
+
+        LocationService.create(location)
+
+        return {'status': 'accepted'}, 202
 
 
 @api.route("/locations/<location_id>")
