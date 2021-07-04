@@ -1,7 +1,13 @@
-from app.udaconnect.infra.database import DBSession
-from app.udaconnect.models.person import Person
+import logging
+
 from typing import Dict
 
+from app.udaconnect.infra.database import DBSession
+from app.udaconnect.models.person import Person
+from app.udaconnect.models.schemas import PersonSchema
+
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger("udaconnect-consumer-person-svc")
 
 session = DBSession()
 
@@ -9,6 +15,12 @@ session = DBSession()
 class PersonService:
     @staticmethod
     def create(person: Dict):
+        validation_results: Dict = PersonSchema().validate(person)
+        if validation_results:
+            logger.warning(
+                f"Unexpected data format in payload: {validation_results}")
+            raise Exception(f"Invalid payload: {validation_results}")
+
         new_person = Person()
         new_person.first_name = person["first_name"]
         new_person.last_name = person["last_name"]
