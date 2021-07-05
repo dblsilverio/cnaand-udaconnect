@@ -1,0 +1,15 @@
+1. Generating Python gRPC Services
+
+From the module's root folder, execute the following command:
+
+$ python -m grpc_tools.protoc -I./ --python_out=./app/udaconnect/ --grpc_python_out=./app/udaconnect/ ./proto/connection-data.proto
+
+Stub and Servicer classes will be generated inside ./app/udaconnect/proto/ folder.
+
+
+2. Udaconnect gRPC Messages and Servicer
+TODO: Describe messages and service
+
+3. Sample Request
+
+Root file tester.py is prepared to help you testing if service is successfully started.
