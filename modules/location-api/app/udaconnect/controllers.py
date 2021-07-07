@@ -1,9 +1,10 @@
-from app.udaconnect.models import Location
-from app.udaconnect.schemas import LocationSchema
-from app.udaconnect.services import LocationService
 from flask import request
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
+
+from app.udaconnect.models.location import Location
+from app.udaconnect.schemas import LocationSchema
+from app.udaconnect.services.location_service import LocationService
 
 DATE_FORMAT = "%Y-%m-%d"
 

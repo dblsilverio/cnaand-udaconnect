@@ -3,19 +3,11 @@ from __future__ import annotations
 from datetime import datetime
 
 from app import db  # noqa
+from app.udaconnect.models.person import Person
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from shapely.geometry.point import Point
-from sqlalchemy import BigInteger, Column, DateTime, ForeignKey, Integer, String
-
-
-class Person(db.Model):
-    __tablename__ = "person"
-
-    id = Column(Integer, primary_key=True)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    company_name = Column(String, nullable=False)
+from sqlalchemy import BigInteger, Column, DateTime, ForeignKey, Integer
 
 
 class Location(db.Model):

@@ -1,4 +1,4 @@
-from app.udaconnect.models import Location
+from app.udaconnect.models.location import Location
 from marshmallow import Schema, fields
 
 

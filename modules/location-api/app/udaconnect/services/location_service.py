@@ -1,12 +1,11 @@
 import logging
-import json
 
-from kafka import KafkaProducer
 from typing import Dict
 
 from app import db
-from app.udaconnect.models import Location
+from app.udaconnect.models.location import Location
 from app.udaconnect.schemas import LocationSchema
+from app.udaconnect.producers.location_producer import LocationProducer
 
 
 logging.basicConfig(level=logging.WARNING)
@@ -35,16 +34,3 @@ class LocationService:
             raise Exception(f"Invalid payload: {validation_results}")
 
         LocationProducer.send_message(location)
-
-
-TOPIC_NAME = 'location'
-KAFKA_SERVER = 'kafka:9092'
-
-kafka_producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
-
-
-class LocationProducer:
-    @staticmethod
-    def send_message(location):
-        kafka_producer.send(TOPIC_NAME, json.dumps(location).encode())
-        kafka_producer.flush(timeout=5.0)
