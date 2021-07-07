@@ -1,3 +1,4 @@
+import logging
 import grpc
 import os
 import time
@@ -10,12 +11,15 @@ from app.udaconnect.proto.connection_data_pb2_grpc import add_ConnectionDataServ
 
 SERVER_PORT = os.environ.get("GRPC_PORT") or 5005
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("udaconnect-dataconnection")
+
 
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
 
 add_ConnectionDataServiceServicer_to_server(ConnectionDataServicer(), server)
 
-print(f"Server starting on port {SERVER_PORT}")
+logger.info(f"Server starting on port {SERVER_PORT}")
 server.add_insecure_port(f"[::]:{SERVER_PORT}")
 server.start()
 

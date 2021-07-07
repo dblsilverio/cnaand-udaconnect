@@ -22,7 +22,6 @@ class PersonService:
     def create(person: Dict):
         PersonProducer.send_message(person)
 
-
     @staticmethod
     def retrieve(person_id: int) -> Person:
         person = db.session.query(Person).get(person_id)
