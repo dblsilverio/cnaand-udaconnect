@@ -60,11 +60,11 @@ GRPC_HOST=xyz:8888 python tester.py ...
 This script requires 3 mandatory parameters(person id, start and end date). It also receives an optional value for
 distance:
 
-$ python testes.py PERSON_ID START_DATE END_DATE [DISTANCE]
+$ python tester.py PERSON_ID START_DATE END_DATE [DISTANCE]
 
-$ python testes.py 6 2020-01-01 2020-06-30
+$ python tester.py 6 2020-01-01 2020-06-30
 or
-$ python testes.py 6 2020-01-01 2020-06-30 100
+$ python tester.py 6 2020-01-01 2020-06-30 100
 
 This script outputs the SearchMessage used and the service response on console:
 

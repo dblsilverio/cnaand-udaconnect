@@ -57,7 +57,7 @@ if __name__ == '__main__':
                                end_date=ts_end,
                                meters=distance)
 
-    print(f"Search Message: {search_msg}")
+    print(f"Search Message send to {grpc_host} -> {search_msg}")
     response = stub.FindContacts(search_msg)
 
     print(f"Response: {response}")
