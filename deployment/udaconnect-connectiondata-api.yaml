@@ -9,8 +9,10 @@ spec:
   - name: "5005"
     port: 5005
     targetPort: 5005
+    nodePort: 30003
   selector:
     service: udaconnect-connectiondata-api
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
