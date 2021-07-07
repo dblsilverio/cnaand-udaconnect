@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x15\x63onnection-data.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x01\n\rSearchMessage\x12\x11\n\tperson_id\x18\x01 \x01(\x03\x12.\n\nstart_date\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_date\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06meters\x18\x04 \x01(\x02\"Q\n\x06Person\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x12\n\nfirst_name\x18\x02 \x01(\t\x12\x11\n\tlast_name\x18\x03 \x01(\t\x12\x14\n\x0c\x63ompany_name\x18\x04 \x01(\t\"\x81\x01\n\x08Location\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x11\n\tperson_id\x18\x02 \x01(\x03\x12\x11\n\tlongitude\x18\x03 \x01(\t\x12\x10\n\x08latitude\x18\x04 \x01(\t\x12\x31\n\rcreation_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"I\n\x11\x43onnectionMessage\x12\x1b\n\x08location\x18\x01 \x01(\x0b\x32\t.Location\x12\x17\n\x06person\x18\x02 \x01(\x0b\x32\x07.Person\"@\n\x15\x43onnectionMessageList\x12\'\n\x0b\x63onnections\x18\x01 \x03(\x0b\x32\x12.ConnectionMessage2O\n\x15\x43onnectionDataService\x12\x36\n\x0c\x46indContacts\x12\x0e.SearchMessage\x1a\x16.ConnectionMessageListb\x06proto3'
+  serialized_pb=b'\n\x15\x63onnection-data.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x01\n\rSearchMessage\x12\x11\n\tperson_id\x18\x01 \x01(\x03\x12.\n\nstart_date\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_date\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06meters\x18\x04 \x01(\x02\"Q\n\x06Person\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x12\n\nfirst_name\x18\x02 \x01(\t\x12\x11\n\tlast_name\x18\x03 \x01(\t\x12\x14\n\x0c\x63ompany_name\x18\x04 \x01(\t\"\x94\x01\n\x08Location\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x11\n\tperson_id\x18\x02 \x01(\x03\x12\x11\n\tlongitude\x18\x03 \x01(\t\x12\x10\n\x08latitude\x18\x04 \x01(\t\x12\x31\n\rcreation_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x11\n\twkt_shape\x18\x06 \x01(\t\"I\n\x11\x43onnectionMessage\x12\x1b\n\x08location\x18\x01 \x01(\x0b\x32\t.Location\x12\x17\n\x06person\x18\x02 \x01(\x0b\x32\x07.Person\"@\n\x15\x43onnectionMessageList\x12\'\n\x0b\x63onnections\x18\x01 \x03(\x0b\x32\x12.ConnectionMessage2O\n\x15\x43onnectionDataService\x12\x36\n\x0c\x46indContacts\x12\x0e.SearchMessage\x1a\x16.ConnectionMessageListb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -176,6 +176,13 @@ _LOCATION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='wkt_shape', full_name='Location.wkt_shape', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -189,7 +196,7 @@ _LOCATION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=289,
-  serialized_end=418,
+  serialized_end=437,
 )
 
 
@@ -227,8 +234,8 @@ _CONNECTIONMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=420,
-  serialized_end=493,
+  serialized_start=439,
+  serialized_end=512,
 )
 
 
@@ -259,8 +266,8 @@ _CONNECTIONMESSAGELIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=495,
-  serialized_end=559,
+  serialized_start=514,
+  serialized_end=578,
 )
 
 _SEARCHMESSAGE.fields_by_name['start_date'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -320,8 +327,8 @@ _CONNECTIONDATASERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=561,
-  serialized_end=640,
+  serialized_start=580,
+  serialized_end=659,
   methods=[
   _descriptor.MethodDescriptor(
     name='FindContacts',

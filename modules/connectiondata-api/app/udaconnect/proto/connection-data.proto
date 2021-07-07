@@ -22,6 +22,7 @@ message Location {
     string longitude = 3;
     string latitude = 4;
     google.protobuf.Timestamp creation_time = 5;
+    string wkt_shape = 6;
 }
 
 message ConnectionMessage {
