@@ -1,14 +1,13 @@
 from datetime import datetime, timedelta
-from google.protobuf.timestamp_pb2 import Timestamp
-from sqlalchemy.sql import text
-from typing import List, Dict
+from typing import List
 
 from app.udaconnect.infra.database import DBSession, engine
+from app.udaconnect.proto.connection_data_pb2 import Person as PersonPB2, Location as LocationPB2, ConnectionMessage, \
+    ConnectionMessageList
+from app.udaconnect.services.location_service import LocationService
 from app.udaconnect.services.person_service import PersonService
-from app.udaconnect.models import Connection, Location, Person
-
-from app.udaconnect.proto.connection_data_pb2 import SearchMessage, Person as PersonPB2, Location as LocationPB2, ConnectionMessage, ConnectionMessageList
-
+from google.protobuf.timestamp_pb2 import Timestamp
+from sqlalchemy.sql import text
 
 session = DBSession()
 
@@ -17,18 +16,16 @@ class ConnectionService:
 
     @staticmethod
     def find_contacts(person_id: int, start_date: datetime, end_date: datetime, meters=5) -> ConnectionMessageList:
+        """
+        Finds all Person who have been within a given distance of a given Person within a date range.
+        This will run rather quickly locally, but this is an expensive method and will take a bit of time to run on
+        large datasets. This is by design: what are some ways or techniques to help make this data integrate more
+        smoothly for a better user experience for API consumers?
+        """
 
-        locations: List = session.query(Location).filter(
-            Location.person_id == person_id
-        ).filter(Location.creation_time < end_date).filter(
-            Location.creation_time >= start_date
-        ).all()
-
-        # Cache all users in memory for quick lookup
-        person_map: Dict[str, Person] = {
-            person.id: ConnectionService.person_to_pb2(person)
-            for person in PersonService.retrieve_all()
-        }
+        locations: List = LocationService.fetch_locations(person_id=person_id,
+                                                            start_date=start_date,
+                                                            end_date=end_date)
 
         # Prepare arguments for queries
         data = []
@@ -74,7 +71,7 @@ class ConnectionService:
 
                 result.append(
                     ConnectionMessage(
-                        person=ConnectionService.person_to_pb2(person_map[exposed_person_id])
+                        person=ConnectionService.person_to_pb2(PersonService.retrieve(exposed_person_id))
                         , location=location
                     )
                 )
