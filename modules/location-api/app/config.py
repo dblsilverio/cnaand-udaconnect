@@ -18,13 +18,15 @@ class BaseConfig:
 class DevelopmentConfig(BaseConfig):
     CONFIG_NAME = "dev"
     SECRET_KEY = os.getenv(
-        "DEV_SECRET_KEY", "You can't see California without Marlon Widgeto's eyes"
+        "DEV_SECRET_KEY", "You can't see California without Marlon "
+                          "Widgeto's eyes"
     )
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = (
-        f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:"
+        f"{DB_PORT}/{DB_NAME}"
     )
 
 
@@ -35,7 +37,8 @@ class TestingConfig(BaseConfig):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = (
-        f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:"
+        f"{DB_PORT}/{DB_NAME}"
     )
 
 
@@ -46,7 +49,8 @@ class ProductionConfig(BaseConfig):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = (
-        f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:"
+        f"{DB_PORT}/{DB_NAME}"
     )
 
 
