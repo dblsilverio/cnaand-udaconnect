@@ -12,6 +12,16 @@ logger = logging.getLogger("udaconnect-connection-servicer")
 class ConnectionDataServicer(ConnectionDataServiceServicer):
 
     def FindContacts(self, request, context):
+        """
+
+        Endpoint for searching connection data between selected person_id
+        and other that shared a close geo proximity.
+
+        :param request: SearchMessage request data for finding connections
+        :param context: gRPC context
+        :return: Returns a ConnectionMessageList containing ConnectionMessage
+        instances found
+        """
 
         params = {
             'start_date': datetime.fromtimestamp(request.start_date.seconds),

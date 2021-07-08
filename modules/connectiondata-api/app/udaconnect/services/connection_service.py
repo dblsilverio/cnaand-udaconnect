@@ -21,11 +21,10 @@ class ConnectionService:
         Finds all Person who have been within a given distance of a given
         Person within a date range.
 
-        This will run rather quickly locally, but this is an expensive method
-        and will take a bit of time to run on
-        large datasets. This is by design: what are some ways or techniques
-        to help make this data integrate more
-        smoothly for a better user experience for API consumers?
+        :param person_id: Person id to look for contacts
+        :param start_date: The start date for looking for contacts
+        :param end_date: The end date for looking for contacts
+        :param meters: The distance to check for proximity. Default: 5
         """
 
         locations: List = LocationService.fetch_locations(
@@ -98,6 +97,12 @@ class ConnectionService:
 
     @staticmethod
     def person_to_pb2(person) -> PersonPB2:
+        """
+        Convenience method for translating a Person model do a Protobuf Person.
+        :param person: Person model to convert
+        :return: PersonPB2
+        """
+
         return PersonPB2(id=person.id, first_name=person.first_name,
                          last_name=person.last_name,
                          company_name=person.company_name)
