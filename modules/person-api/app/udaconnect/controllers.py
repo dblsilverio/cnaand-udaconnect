@@ -67,7 +67,8 @@ class ConnectionDataResource(Resource):
         )
 
         connection_list: List[Connection] = [
-            ConnectionDataResource.pb2_to_model(connection) for connection in results.connections
+            ConnectionDataResource.pb2_to_model(connection)
+            for connection in results.connections
         ]
 
         return connection_list
@@ -75,12 +76,17 @@ class ConnectionDataResource(Resource):
     @staticmethod
     def pb2_to_model(connection) -> Connection:
         location_pb2 = connection.location
-        location = Location(id=location_pb2.id, person_id=location_pb2.person_id,
+        location = Location(id=location_pb2.id,
+                            person_id=location_pb2.person_id,
                             wkt_shape=location_pb2.wkt_shape,
-                            creation_time=datetime.fromtimestamp(location_pb2.creation_time.seconds))
+                            creation_time=datetime.fromtimestamp(
+                                location_pb2.creation_time.seconds)
+                            )
 
         person_pb2 = connection.person
-        person = Person(id=person_pb2.id, first_name=person_pb2.first_name,
-                        last_name=person_pb2.last_name, company_name=person_pb2.company_name)
+        person = Person(id=person_pb2.id,
+                        first_name=person_pb2.first_name,
+                        last_name=person_pb2.last_name,
+                        company_name=person_pb2.company_name)
 
         return Connection(person=person, location=location)
