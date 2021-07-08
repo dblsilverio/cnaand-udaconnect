@@ -1,23 +1,14 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime
 
 from app import db  # noqa
+from app.udaconnect.models.person import Person
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
 from shapely.geometry.point import Point
-from sqlalchemy import BigInteger, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import BigInteger, Column, DateTime, ForeignKey, Integer
 from sqlalchemy.ext.hybrid import hybrid_property
-
-
-class Person(db.Model):
-    __tablename__ = "person"
-
-    id = Column(Integer, primary_key=True)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
-    company_name = Column(String, nullable=False)
 
 
 class Location(db.Model):
@@ -55,9 +46,3 @@ class Location(db.Model):
     def latitude(self) -> str:
         coord_text = self.wkt_shape
         return coord_text[coord_text.find("(") + 1 : coord_text.find(" ")]
-
-
-@dataclass
-class Connection:
-    location: Location
-    person: Person
