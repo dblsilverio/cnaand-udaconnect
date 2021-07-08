@@ -14,7 +14,8 @@ TOPIC_NAME = 'person'
 class PersonConsumer(threading.Thread):
     """
     Non blocking kafka consumer.
-    Base on kafka-python examples @ https://github.com/dpkp/kafka-python/blob/master/example.py
+    Base on kafka-python examples @
+    https://github.com/dpkp/kafka-python/blob/master/example.py
     """
     def __init__(self, kafka_server):
         threading.Thread.__init__(self)
@@ -27,7 +28,9 @@ class PersonConsumer(threading.Thread):
     def run(self):
         logger.info('Starting Person Topic Consumer')
 
-        consumer = KafkaConsumer(bootstrap_servers=self.kafka_server, consumer_timeout_ms=1000, group_id='person-group')
+        consumer = KafkaConsumer(bootstrap_servers=self.kafka_server,
+                                 consumer_timeout_ms=1000,
+                                 group_id='person-group')
         consumer.subscribe(TOPIC_NAME)
 
         while not self.stop_event.is_set():
