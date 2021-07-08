@@ -1,7 +1,8 @@
 import logging
 from datetime import datetime
 
-from app.udaconnect.proto.connection_data_pb2_grpc import ConnectionDataServiceServicer
+from app.udaconnect.proto.connection_data_pb2_grpc \
+    import ConnectionDataServiceServicer
 from app.udaconnect.services.connection_service import ConnectionService
 
 logging.basicConfig(level=logging.WARNING)
