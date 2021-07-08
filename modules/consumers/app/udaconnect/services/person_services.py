@@ -15,6 +15,12 @@ session = DBSession()
 class PersonService:
     @staticmethod
     def create(person: Dict):
+        """
+        Validate and persist a person model to DB.
+
+        :param person: A Person dict
+        """
+
         validation_results: Dict = PersonSchema().validate(person)
         if validation_results:
             logger.warning(

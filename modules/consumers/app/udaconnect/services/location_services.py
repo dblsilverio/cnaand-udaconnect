@@ -16,6 +16,12 @@ session = DBSession()
 class LocationService:
     @staticmethod
     def create(location: Dict):
+        """
+        Validate and persists a location model to DB.
+
+        :param location: A Location dict
+        """
+
         validation_results: Dict = LocationSchema().validate(location)
         if validation_results:
             logger.warning(
