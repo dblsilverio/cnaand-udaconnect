@@ -70,8 +70,6 @@ class ConnectionDataResource(Resource):
             ConnectionDataResource.pb2_to_model(connection) for connection in results.connections
         ]
 
-        print(connection_list)
-
         return connection_list
 
     @staticmethod
