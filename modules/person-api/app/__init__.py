@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restx import Api
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm.exc import NoResultFound
+from werkzeug.exceptions import InternalServerError
 
 db = SQLAlchemy()
 
@@ -22,5 +24,16 @@ def create_app(env=None):
     @app.route("/health")
     def health():
         return jsonify("healthy")
+
+    @app.errorhandler(NoResultFound)
+    def handle_not_found(e):
+        return {'error': 'No Result Found'}, 404
+
+    @app.errorhandler(InternalServerError)
+    def internal_server_error(e):
+        return {
+            'error': 'Internal Server Error',
+            'detail': e.original_exception
+            }
 
     return app

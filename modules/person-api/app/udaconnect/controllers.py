@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from flask import request
 from flask_accepts import accepts, responds
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource, fields
 
 from app.udaconnect.models.connection import Connection
 from app.udaconnect.models.location import Location
@@ -16,14 +16,37 @@ DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Provides person data")  # noqa
 
+person_model = api.model('Person', {
+    'id': fields.Integer,
+    'first_name': fields.String,
+    'last_name': fields.String,
+    'company_name': fields.String
+})
 
-# TODO: This needs better exception handling
+location_model = api.model('Location', {
+        'id': fields.Integer,
+        'person_id': fields.Integer,
+        'longitude': fields.String,
+        'latitude': fields.String,
+        'creation_time': fields.DateTime
+    })
+
+connection_model = api.model('Connection', {
+    'location': fields.Nested(location_model),
+    'person': fields.Nested(person_model)
+})
 
 
 @api.route("/persons")
 class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
-    @api.response(202, 'Person creation accepted')
+    @api.doc(description='Issues the creation of a new Location',
+             body=person_model,
+             responses={
+                 202: 'Person creation accepted',
+                 500: 'Internal server error'
+             }
+             )
     def post(self):
         payload = request.get_json()
         PersonService.create(payload)
@@ -31,6 +54,8 @@ class PersonsResource(Resource):
         return {'status': 'accepted'}, 202
 
     @responds(schema=PersonSchema, many=True)
+    @api.doc(description='List existing people',)
+    @api.response(200, 'Listing successful', fields.List(fields.Nested(person_model)))
     def get(self) -> List[Person]:
         persons: List[Person] = PersonService.retrieve_all()
         return persons
@@ -40,18 +65,29 @@ class PersonsResource(Resource):
 @api.param("person_id", "Unique ID for a given Person", _in="query")
 class PersonResource(Resource):
     @responds(schema=PersonSchema)
+    @api.doc(description='Search for a given Person by its id',
+             params={'person_id': 'Required person id'},
+             responses={
+                 404: 'Person not found',
+                 500: 'Internal server error'
+             },
+             )
+    @api.response(200, 'Person found', person_model)
     def get(self, person_id) -> Person:
         person: Person = PersonService.retrieve(person_id)
         return person
 
 
 @api.route("/persons/<person_id>/connection")
-# @api.param("start_date", "Lower bound of date range", _in="query")
-# @api.param("end_date", "Upper bound of date range", _in="query")
-# @api.param("distance", "Proximity to a given user in meters", _in="query")
+@api.param("start_date", "Lower bound of date range", _in="query")
+@api.param("end_date", "Upper bound of date range", _in="query")
+@api.param("distance", "Proximity to a given user in meters", _in="query")
+@api.doc(description='Search for connection data for a given person_id',
+         model=connection_model)
 class ConnectionDataResource(Resource):
     @responds(schema=ConnectionSchema, many=True)
-    def get(self, person_id) -> ConnectionSchema:
+    @api.response(200, 'Connection(s) found', fields.List(fields.Nested(connection_model)))
+    def get(self, person_id) -> List[ConnectionSchema]:
         start_date: datetime = datetime.strptime(
             request.args["start_date"], DATE_FORMAT
         )
