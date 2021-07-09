@@ -34,6 +34,23 @@ spec:
       - image: diogosilverio/nd064-udaconnect-connectiondata-api:latest
         name: udaconnect-connectiondata-api
         imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "64m"
+          limits:
+            memory: "256Mi"
+            cpu: "128m"
+        livenessProbe:
+          tcpSocket:
+            port: 5005
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 5005
+          initialDelaySeconds: 10
+          periodSeconds: 5
         env:
         - name: DB_USERNAME
           valueFrom:
