@@ -1,4 +1,4 @@
-# Cloud Native Application Architecture Program Nanodegree Program
+# Cloud Native Application Architecture - Nanodegree Program
 
 ## Message Passing - UdaConnect
 
